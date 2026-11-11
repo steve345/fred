@@ -43,7 +43,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 #v7.0.1
 
       - name: Run Poutine
         uses: boostsecurityio/poutine-action@c89412a84a4683a307a57a5425d04a6a071d278b #v1.1.4
@@ -72,7 +72,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 #v7.0.1
 
       - name: Initialize CodeQL
         uses: github/codeql-action/init@94e5ff4159074319a4b3e2f6ed7b1b636bf891b7 #v2.27.4
