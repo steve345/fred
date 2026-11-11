@@ -46,7 +46,7 @@ jobs:
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
 
       - name: Run Poutine
-        uses: boostsecurityio/poutine-action@c89412a84a4683a307a57a5425d04a6a071d278b
+        uses: boostsecurityio/poutine-action@c89412a84a4683a307a57a5425d04a6a071d278b #v1.1.4
 
       - name: Upload Poutine SARIF
         if: ${{ !cancelled() && hashFiles('results.sarif') != '' }}
@@ -75,7 +75,7 @@ jobs:
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
 
       - name: Initialize CodeQL
-        uses: github/codeql-action/init@94e5ff4159074319a4b3e2f6ed7b1b636bf891b7
+        uses: github/codeql-action/init@94e5ff4159074319a4b3e2f6ed7b1b636bf891b7 #v2.27.4
         with:
           languages: ${{ matrix.language }}
           config-file: ./.github/codeql/codeql-config.yml
