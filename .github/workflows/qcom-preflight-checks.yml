@@ -50,7 +50,7 @@ jobs:
 
       - name: Upload Poutine SARIF
         if: ${{ !cancelled() && hashFiles('results.sarif') != '' }}
-        uses: github/codeql-action/upload-sarif@<PINNED_SHA>
+        uses: github/codeql-action/upload-sarif@94e5ff4159074319a4b3e2f6ed7b1b636bf891b7 #v2.27.4
         with:
           sarif_file: results.sarif
           category: poutine
