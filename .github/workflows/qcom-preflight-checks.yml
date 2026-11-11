@@ -1,4 +1,5 @@
 name: QC Preflight Checks
+# Plus Security Checks
 
 on:
   pull_request:
@@ -22,3 +23,67 @@ jobs:
     permissions:
       contents: read
       security-events: write
+
+  poutine:
+    name: Poutine CI/CD Security Scan
+    if: >-
+      ${{
+        github.event_name == 'workflow_dispatch' ||
+        (
+          github.event_name != 'schedule' &&
+          github.event.repository.default_branch == 'main'
+        )
+      }}
+
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      security-events: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+
+      - name: Run Poutine
+        uses: boostsecurityio/poutine-action@c89412a84a4683a307a57a5425d04a6a071d278b
+
+      - name: Upload Poutine SARIF
+        if: ${{ !cancelled() && hashFiles('results.sarif') != '' }}
+        uses: github/codeql-action/upload-sarif@<PINNED_SHA>
+        with:
+          sarif_file: results.sarif
+          category: poutine
+
+  codeql:
+    name: CodeQL (${{ matrix.language }})
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      security-events: write
+
+    strategy:
+      fail-fast: false
+      matrix:
+        language:
+          - python
+          - javascript-typescript
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@94e5ff4159074319a4b3e2f6ed7b1b636bf891b7
+        with:
+          languages: ${{ matrix.language }}
+          config-file: ./.github/codeql/codeql-config.yml
+
+      # Add build steps here if the repository contains compiled languages.
+      # Python and JavaScript/TypeScript normally use CodeQL autobuild behavior.
+
+      - name: Analyze with CodeQL
+        uses: github/codeql-action/analyze@94e5ff4159074319a4b3e2f6ed7b1b636bf891b7
+        with:
+          category: "/language:${{ matrix.language }}"
